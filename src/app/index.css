@@ -1,0 +1,114 @@
+/* General item styling */
+ul {
+  list-style-type: disc; /* Default bullet point style */
+  padding-left: 20px; /* Space for the bullets */
+  color: white; /* Ensure text is visible on black background */
+}
+
+.list-item {
+  display: flex; /* Use flexbox for alignment */
+  justify-content: space-between; /* Space items evenly */
+  align-items: center; /* Center align items vertically */
+  padding: 8px 12px;
+  border-bottom: 1px solid #444; /* Subtle border for separation */
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+  color: white; /* Text color for list items */
+  width: 750px;
+}
+
+.list-item:hover {
+  background-color: #333; /* Darker hover effect for black background */
+}
+
+/* Individual item column styling */
+.item-id, .item-name, .item-email {
+  flex: 1; /* Allow items to expand equally */
+  padding-right: 20px;
+  white-space: nowrap; /* Prevent text from wrapping */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Add ellipsis for overflow */
+  color: #f0f0f0; /* Light text color for better contrast */
+}
+
+.item-id {
+  /* Removed max-width to allow full ID display */
+  font-weight: bold;
+  color: #ffcc00; /* Bright color for IDs */
+}
+
+.item-name, .item-email {
+  flex: 1; /* Keep equal flex for name and email */
+}
+
+.item-email {
+  color: #999; /* Muted, lighter color for the email */
+  font-style: italic;
+}
+
+/* Button styling */
+button {
+  width: 300px;
+  background-color: #007bff; /* Blue background for buttons */
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+button:active {
+  background-color: #00408a; /* Even darker blue on active */
+}
+
+button[title='+'] {
+  font-size: 20px; /* Larger size for the add button */
+  padding: 6px 12px;
+}
+
+/* Input container styling */
+.input-container {
+  display: flex;
+  flex-direction: column; /* Stack inputs vertically */
+  gap: 10px; /* Space between input fields and button */
+  margin-bottom: 50px; /* Space below input container */
+}
+
+/* Input field styling */
+.input-field {
+  padding: 10px;
+  border: 1px solid #ddd; /* Light border for input fields */
+  border-radius: 4px;
+  font-size: 14px;
+  color: #333; /* Dark text color for input */
+  background-color: #fff; /* White background for input fields */
+  transition: border-color 0.3s; /* Transition for border color */
+  width: 300px; /* Full width for input fields */
+}
+
+.input-field:focus {
+  border-color: #007bff; /* Change border color on focus */
+  outline: none; /* Remove default outline */
+}
+
+/* Overall container styling */
+.app-container {
+  max-width: 1200px; /* Max width for the container */
+  margin: 20px auto; /* Centering the container */
+  padding: 20px;
+  border: 1px solid #444; /* Border for container */
+  border-radius: 8px;
+  background-color: #222; /* Dark background for the app */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); /* Shadow for depth */
+}
+
+/* Customer list styling */
+.customer-list {
+  margin-top: 20px; /* Space above the customer list */
+}
