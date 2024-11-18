@@ -1,5 +1,8 @@
-import PowerSyncComponent from "./components/PowerSyncComponent";
+"use client";
 import styles from "./page.module.css";
+
+import dynamic from "next/dynamic";
+const PowerSyncComponent = dynamic(() => import("./components/PowerSyncComponent"), { ssr: false });
 
 export default function Home() {
   
