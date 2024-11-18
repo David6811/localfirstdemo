@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import "./index.css";
 import { findUsers, setupPowerSync } from "../services/powersync";
 import { User } from "../domain/data/models/User";
+import ProfileClient from "./Profile/ProfileClient";
 
 const App: React.FC = () => {
   const [data, setData] = useState<User[] | null>(null);
@@ -19,6 +20,7 @@ const App: React.FC = () => {
   }, []);
   return (
     <div>
+      <ProfileClient />
       <div className="customer-list">
         {data && data.length > 0 ? (
           <ul>
