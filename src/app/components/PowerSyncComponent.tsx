@@ -35,6 +35,12 @@ const App: React.FC = () => {
           <span>No data available</span>
         )}
       </div>
+      <div>
+        <a href="/api/auth/login">Login</a>
+      </div>
+      <div>
+        <a href="/api/auth/logout">Logout</a>
+      </div>
     </div>
   );
 }
