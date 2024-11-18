@@ -24,7 +24,8 @@ export default function Home() {
         {data && data.length > 0 ? (
           <ul>
             {data.map((item) => (
-              <li key={item._id} className="list-item">
+              <li key={item.id} className="list-item">
+                <span className="item-name">{item.id}</span>
                 <span className="item-name">{item.name}</span>
                 <span className="item-email">{item.email}</span>
                 <span className="item-id">{item.age}</span>

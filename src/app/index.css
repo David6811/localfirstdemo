@@ -14,7 +14,7 @@ ul {
   font-size: 14px;
   transition: background-color 0.3s ease;
   color: white; /* Text color for list items */
-  width: 750px;
+  width: 960px;
 }
 
 .list-item:hover {
