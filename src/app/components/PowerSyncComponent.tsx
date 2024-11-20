@@ -1,22 +1,34 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import "./index.css";
-import { findUsers, setupPowerSync } from "../services/powersync";
+import { setupPowerSync, watchLists } from "../services/powersync";
 import { User } from "../domain/data/models/User";
 import ProfileClient from "./Profile/ProfileClient";
 
 const App: React.FC = () => {
   const [data, setData] = useState<User[] | null>(null);
 
+  const handleUpdate = (update: User[]) => {
+    console.log('Received update:', update);
+    setData(update);
+  };
+  
+
   useEffect(() => {
     const initPowerSync = async () => {
       await setupPowerSync();
-      const users = await findUsers();
-      console.log("Users:", users);
-      setData(users);
+      // const users = await findUsers();
+      // console.log("Users:", users);
+      // setData(users);
     };
 
     initPowerSync();
+
+    watchLists(handleUpdate).catch((err) => {
+      console.error('Error watching lists:', err);
+    });
+
+
   }, []);
   return (
     <div>
