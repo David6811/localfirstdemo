@@ -38,3 +38,20 @@ export const findUsers = async (): Promise<User[]> => {
     const result = await db.getAll('SELECT * FROM users');
     return result as User[];
 };
+
+// Watch changes to lists
+const abortController = new AbortController();
+
+export const watchLists = async (onUpdate: (updates: User[]) => void): Promise<void> => {
+    for await (const { rows } of db.watch('SELECT * FROM users', [], { signal: abortController.signal })) {
+        const updates = rows?._array ?? [];
+        if (updates.length > 0) {
+            onUpdate(updates);
+        }
+    }
+};
+
+
+
+
+
