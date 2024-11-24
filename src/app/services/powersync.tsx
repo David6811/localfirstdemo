@@ -52,6 +52,17 @@ export const watchLists = async (onUpdate: (updates: User[]) => void): Promise<v
 };
 
 
+export const updateNote = async (note: string, id: string) => {
+    console.log(`UPDATE users SET note = ? WHERE id = ?`);
+    await db.execute(
+        `UPDATE users SET note = ? WHERE id = ?`,
+        [note, id]
+    );
+    console.log(`Note updated successfully for ID: ${id}`);
+};
+
+
+
 
 
 

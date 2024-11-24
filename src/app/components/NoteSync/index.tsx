@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./index.css";
 import { User } from "@/app/domain/data/models/User";
-import { setupPowerSync, watchLists } from "@/app/services/powersync";
+import { setupPowerSync, updateNote, watchLists } from "@/app/services/powersync";
 
 export default function NoteSync() {
     const [data, setData] = useState<User[] | null>(null);
@@ -19,9 +19,21 @@ export default function NoteSync() {
         });
     };
 
-    const handleUpdate = (update: User[]) => {
-        console.log("Received update:", update);
-        setData(update);
+    const handleUpdate = () => {
+        if (data) {
+            console.log("Updating notes:", data);
+            data.forEach(({ id, note }) => {
+                if (id && note) {
+                    updateNote(note, id).catch((err) =>
+                        console.error(`Error updating note for user ${id}:`, err)
+                    );
+                } else {
+                    console.warn(`Missing id or note for update:`, { id, note });
+                }
+            });
+        } else {
+            console.warn("No data to update.");
+        }
     };
 
     useEffect(() => {
@@ -31,7 +43,10 @@ export default function NoteSync() {
 
         initPowerSync();
 
-        watchLists(handleUpdate).catch((err) => {
+        watchLists((update) => {
+            console.log("Received update:", update);
+            setData(update);
+        }).catch((err) => {
             console.error("Error watching lists:", err);
         });
     }, []);
@@ -69,6 +84,9 @@ export default function NoteSync() {
                     <span>No data available</span>
                 )}
             </div>
+            <button onClick={handleUpdate} className="update-button">
+                Update Notes
+            </button>
         </div>
     );
 }

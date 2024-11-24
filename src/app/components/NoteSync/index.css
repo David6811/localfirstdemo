@@ -59,3 +59,19 @@
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Stronger shadow */
   transition: all 0.3s ease; /* Smooth transition */
 }
+
+
+.update-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.update-button:hover {
+  background-color: #0056b3;
+}
