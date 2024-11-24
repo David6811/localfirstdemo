@@ -5,9 +5,9 @@ const users = new Table(
   {
     // id column (text) is automatically included
     _id: column.text,
-    age: column.integer,
     email: column.text,
-    name: column.text
+    name: column.text,
+    note: column.text
   },
   { indexes: {} }
 );
