@@ -18,6 +18,7 @@
     "react-dom": "19.0.0-rc-66855b96-20241106"
   },
   "devDependencies": {
+    "@flydotio/dockerfile": "^0.5.9",
     "@types/bcryptjs": "^2.4.6",
     "@types/mongodb": "^4.0.6",
     "@types/node": "^20",
