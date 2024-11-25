@@ -1,77 +1,97 @@
 .customer-list {
-  padding: 16px;
-  list-style-type: none; /* Removes bullets */
-  margin: 0;
+  padding: 12px;
+  margin: 0 auto;
+  max-width: 960px;
   display: flex;
   flex-direction: column;
-  gap: 16px; /* Adds spacing between cards */
+  gap: 24px;
+  font-family: 'Inter', sans-serif;
 }
 
 .list-item {
-  padding: 16px;
-  border: 1px solid #e0e0e0; /* Light border for subtle separation */
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
-  background-color: #ffffff; /* Clean white background */
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  width: 100%;
-  max-width: 800px; /* Limit card width for readability */
-  margin: 0 auto; /* Center cards in the parent container */
+  gap: 16px;
+  background-color: #ffffff; /* Added for better visibility */
+  border: 1px solid #e4e7eb;
+  border-radius: 10px;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.list-item:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
 }
 
 .info-card {
   display: flex;
   flex-direction: column;
-  gap: 8px; /* Spacing between info rows */
-  margin-bottom: 12px;
+  gap: 8px;
+  color: #495057;
 }
 
 .info-item {
   font-size: 14px;
-  color: #333; /* Dark text for good readability */
-  font-weight: 500;
+  font-weight: 600;
+  color: #333333;
 }
 
 .item-note {
-  width: 100%; /* Full width of the card */
-  min-height: 100px; /* Slightly larger for better usability */
+  width: 100%;
+  min-height: 120px;
   font-size: 14px;
   padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  background-color: #f9fafb;
+  color: #495057;
   resize: vertical;
-  background-color: #f9f9f9; /* Subtle background for input field */
-  color: #333;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle inner shadow */
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .item-note:focus {
-  border-color: #007bff; /* Highlight border on focus */
-  outline: none; /* Remove default outline */
+  border-color: #007bff;
   background-color: #ffffff;
-  box-shadow: 0 0 4px rgba(0, 123, 255, 0.5); /* Subtle glow */
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
+  outline: none;
 }
-
-/* Optional: Add a hover effect to the card */
-.list-item:hover {
-  transform: translateY(-2px); /* Slight lift on hover */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Stronger shadow */
-  transition: all 0.3s ease; /* Smooth transition */
-}
-
 
 .update-button {
-  margin-top: 20px;
-  padding: 10px 20px;
+  padding: 12px 24px;
   background-color: #007bff;
-  color: white;
+  color: #ffffff;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
   cursor: pointer;
-  font-size: 16px;
+  align-self: flex-start;
+  transition: background-color 0.3s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 .update-button:hover {
   background-color: #0056b3;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.update-button:active {
+  background-color: #00408d;
+  transform: translateY(0);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .customer-list {
+    padding: 16px;
+  }
+
+  .list-item {
+    gap: 12px;
+  }
+
+  .update-button {
+    align-self: stretch; /* Stretch button width for smaller screens */
+  }
 }

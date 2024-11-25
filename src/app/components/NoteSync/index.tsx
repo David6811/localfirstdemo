@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./index.css";
 import { User } from "@/app/domain/data/models/User";
 import { setupPowerSync, updateNote, watchLists } from "@/app/services/powersync";
+import ProfileClient from "../Profile/ProfileClient";
 
 export default function NoteSync() {
     const [data, setData] = useState<User[] | null>(null);
@@ -54,6 +55,10 @@ export default function NoteSync() {
     return (
         <div>
             <div className="customer-list">
+            <div >
+            <ProfileClient />
+            
+        </div>
                 {data && data.length > 0 ? (
                     <ul>
                         {data.map((item) => (
@@ -64,9 +69,6 @@ export default function NoteSync() {
                                     </div>
                                     <div className="info-item">
                                         <strong>Name:</strong> {item.name}
-                                    </div>
-                                    <div className="info-item">
-                                        <strong>Email:</strong> {item.email}
                                     </div>
                                 </div>
                                 <textarea
@@ -83,10 +85,11 @@ export default function NoteSync() {
                 ) : (
                     <span>No data available</span>
                 )}
+                <button onClick={handleUpdate} className="update-button">
+                    Update Notes
+                </button>
             </div>
-            <button onClick={handleUpdate} className="update-button">
-                Update Notes
-            </button>
+
         </div>
     );
 }

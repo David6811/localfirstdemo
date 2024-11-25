@@ -2,6 +2,32 @@ import { AbstractPowerSyncDatabase, PowerSyncDatabase } from "@powersync/web";
 import { POWERSYNC_ENDPOINT, POWERSYNC_TOKEN } from "../config/_powersyncConfig";
 import { AppSchema } from "../domain/data/schema/users_schema";
 import { User } from "../domain/data/models/User";
+import { UserNoteUpdateRequest } from "../domain/data/models/OperationModels";
+
+
+async function updateUserNoteInApi(opData: UserNoteUpdateRequest) {
+    try {
+        // Assuming your API is at '/api/put-endpoint' (adjust the URL as needed)
+        const response = await fetch('/api/crud', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(opData),
+        });
+
+        if (!response.ok) {
+            throw new Error(`API call failed: ${response.statusText}`);
+        }
+
+        const result = await response.json();
+        console.log("PUT API response: ", result);
+        return result;
+    } catch (error) {
+        console.error("Error calling PUT API:", error);
+        throw error;
+    }
+}
 
 
 class Connector {
@@ -25,7 +51,7 @@ class Connector {
         for (const operation of transaction.crud) {
             const { op: opType, table } = operation;
             console.log("op", { op: opType, table });
-            
+
             const opData = operation.opData ? operation.opData : {}
             console.log("opData: ", opData);
             if (opType == "PUT") {
@@ -34,37 +60,18 @@ class Connector {
 
             else if (opType == "PATCH") {
                 //saveNoteToMongo(powersyncNote);
-              await await callPutApi({ "userId": operation.id , "note": opData.note } );
-              await transaction.complete();
+                const requestData: UserNoteUpdateRequest = {
+                    userId: operation.id,
+                    note: opData.note
+                };
+                await await updateUserNoteInApi(requestData);
+                await transaction.complete();
             }
 
         }
     }
 }
 
-async function callPutApi(opData: any) {
-    try {
-        // Assuming your API is at '/api/put-endpoint' (adjust the URL as needed)
-        const response = await fetch('/api/crud', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(opData),
-        });
-
-        if (!response.ok) {
-            throw new Error(`API call failed: ${response.statusText}`);
-        }
-
-        const result = await response.json();
-        console.log("PUT API response: ", result);
-        return result;
-    } catch (error) {
-        console.error("Error calling PUT API:", error);
-        throw error;
-    }
-}
 
 
 
