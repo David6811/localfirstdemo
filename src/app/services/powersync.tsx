@@ -5,7 +5,7 @@ import { User } from "../domain/data/models/User";
 
 
 class Connector {
-    constructor() {}
+    constructor() { }
 
     async fetchCredentials() {
         return {
@@ -16,8 +16,57 @@ class Connector {
 
     async uploadData(database: AbstractPowerSyncDatabase) {
         console.log("Trying to upload data to server...", database);
+        const transaction = await database.getNextCrudTransaction();
+        if (!transaction) {
+            console.log("No transactions!");
+            return;
+        }
+
+        for (const operation of transaction.crud) {
+            const { op: opType, table } = operation;
+            console.log("op", { op: opType, table });
+            
+            const opData = operation.opData ? operation.opData : {}
+            console.log("opData: ", opData);
+            if (opType == "PUT") {
+                await transaction.complete();
+            }
+
+            else if (opType == "PATCH") {
+                //saveNoteToMongo(powersyncNote);
+              await await callPutApi({ "userId": operation.id , "note": opData.note } );
+              await transaction.complete();
+            }
+
+        }
     }
 }
+
+async function callPutApi(opData: any) {
+    try {
+        // Assuming your API is at '/api/put-endpoint' (adjust the URL as needed)
+        const response = await fetch('/api/crud', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(opData),
+        });
+
+        if (!response.ok) {
+            throw new Error(`API call failed: ${response.statusText}`);
+        }
+
+        const result = await response.json();
+        console.log("PUT API response: ", result);
+        return result;
+    } catch (error) {
+        console.error("Error calling PUT API:", error);
+        throw error;
+    }
+}
+
+
 
 export const db = new PowerSyncDatabase({
     schema: AppSchema,
