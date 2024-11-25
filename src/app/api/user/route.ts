@@ -1,17 +1,15 @@
-import { MongoClient } from 'mongodb';
+import { MongoClient, Db, Collection } from 'mongodb';
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
-// npm install bcryptjs
-// npm install --save-dev @types/bcryptjs
 
 const MONGO_URI = "mongodb://xuwei19850423:xuwei6811@clusterpowersyncdemo-shard-00-02.9dax1.mongodb.net/powersync?ssl=true&authSource=admin";
 const DB_NAME = "db_anycopy_dev"; // Replace with the actual database name
 
 let client: MongoClient | null = null;
-let db: any = null;
+let db: Db | null = null;
 
-async function connectToDatabase() {
-  if (client) {
+async function connectToDatabase(): Promise<Db> {
+  if (client && db) {
     return db;
   }
 
@@ -19,6 +17,14 @@ async function connectToDatabase() {
   await client.connect();
   db = client.db(DB_NAME);
   return db;
+}
+
+interface User {
+  _id: string;
+  email: string;
+  username: string;
+  _hashed_password: string;
+  _wperm?: string[];
 }
 
 export async function POST(request: NextRequest) {
@@ -32,7 +38,7 @@ export async function POST(request: NextRequest) {
   try {
     // Connect to MongoDB (reuse existing connection if possible)
     const db = await connectToDatabase();
-    const usersCollection = db.collection('_User');
+    const usersCollection: Collection<User> = db.collection('_User');
 
     // Find the user by email
     const user = await usersCollection.findOne({ email });
@@ -50,7 +56,7 @@ export async function POST(request: NextRequest) {
 
     // Mock user response
     const responseUser = {
-      user_id: JSON.stringify(user._wperm).replace(/\s+/g, ''), //remove all spaces
+      user_id: JSON.stringify(user._wperm).replace(/\s+/g, ''), // Remove all spaces
       nickname: user.username,
       email: user.email,
     };
