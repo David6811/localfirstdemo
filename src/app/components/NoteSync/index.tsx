@@ -39,7 +39,13 @@ export default function NoteSync() {
 
     useEffect(() => {
         const initPowerSync = async () => {
-            await setupPowerSync();
+            const response = await fetch('/api/auth/token'); // Adjust the path if needed
+            if (!response.ok) {
+                throw new Error(`Failed to fetch access token: ${response.statusText}`);
+            }
+            const data = await response.json();
+            const accessToken = data.foo;
+            await setupPowerSync(accessToken);
         };
 
         initPowerSync();
@@ -55,10 +61,10 @@ export default function NoteSync() {
     return (
         <div>
             <div className="customer-list">
-            <div >
-            <ProfileClient />
-            
-        </div>
+                <div >
+                    <ProfileClient />
+
+                </div>
                 {data && data.length > 0 ? (
                     <ul>
                         {data.map((item) => (

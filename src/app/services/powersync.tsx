@@ -31,7 +31,11 @@ async function updateUserNoteInApi(opData: UserNoteUpdateRequest) {
 
 
 class Connector {
-    constructor() { }
+    private accessToken: string;
+    constructor(accessToken: string) { 
+        console.log("Auth0 access token in Connector: ", accessToken);
+        this.accessToken = accessToken;
+    }
 
     async fetchCredentials() {
         return {
@@ -85,8 +89,8 @@ export const db = new PowerSyncDatabase({
     }
 });
 
-export const setupPowerSync = async () => {
-    const connector = new Connector();
+export const setupPowerSync = async (accessToken : string) => {
+    const connector = new Connector(accessToken);
     db.connect(connector);
 };
 

@@ -16,7 +16,13 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const initPowerSync = async () => {
-      await setupPowerSync();
+      const response = await fetch('/api/auth/token'); // Adjust the path if needed
+        if (!response.ok) {
+          throw new Error(`Failed to fetch access token: ${response.statusText}`);
+        }
+        const data = await response.json();
+        const accessToken = data.foo;
+        await setupPowerSync(accessToken);
       // const users = await findUsers();
       // console.log("Users:", users);
       // setData(users);
