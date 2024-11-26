@@ -1,5 +1,5 @@
 import { AbstractPowerSyncDatabase, PowerSyncDatabase } from "@powersync/web";
-import { POWERSYNC_ENDPOINT, POWERSYNC_TOKEN } from "../config/_powersyncConfig";
+import { POWERSYNC_ENDPOINT } from "../config/_powersyncConfig";
 import { AppSchema } from "../domain/data/schema/users_schema";
 import { NoteUpdateRequest } from "../domain/data/models/OperationModels";
 import { Note } from "../domain/data/models/Note";
@@ -40,7 +40,7 @@ class Connector {
     async fetchCredentials() {
         return {
             endpoint: POWERSYNC_ENDPOINT,
-            token: POWERSYNC_TOKEN
+            token: this.accessToken
         };
     }
 
@@ -66,7 +66,7 @@ class Connector {
                 //saveNoteToMongo(powersyncNote);
                 const requestData: NoteUpdateRequest = {
                     noteId: operation.id,
-                    note: opData.content
+                    content: opData.content
                 };
                 await await updateNoteInApi(requestData);
                 await transaction.complete();

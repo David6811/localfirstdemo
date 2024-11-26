@@ -43,7 +43,7 @@ export async function PUT(request: NextRequest) {
   // Connect to the database
   await connectToDatabase();
 
-  const { noteId, note } = body;
+  const { noteId, content } = body;
 
   const noteObjectId = new ObjectId(noteId);
 
@@ -53,7 +53,7 @@ export async function PUT(request: NextRequest) {
     .collection("notes")
     .updateOne(
       { _id: noteObjectId }, // Filter: find the user by their ID
-      { $set: { note } } // Update operation: only update the note
+      { $set: { content } } // Update operation: only update the note
     );
 
   if (updateResult.modifiedCount === 0) {

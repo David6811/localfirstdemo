@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "./index.css";
-
 import { setupPowerSync, updateNote, watchLists } from "@/app/services/powersync";
 import ProfileClient from "../Profile/ProfileClient";
 import { Note } from "@/app/domain/data/models/Note";
@@ -9,12 +8,12 @@ export default function NoteSync() {
     const [data, setData] = useState<Note[] | null>(null);
 
     // Function to handle updates when the note is edited
-    const handleNoteChange = (id: string, newNote: string) => {
-        console.log(`Note changed for user ${id}:`, newNote); // Log the change
+    const handleNoteChange = (id: string, newContent: string) => {
+        console.log(`Note changed for user ${id}:`, newContent); // Log the change
         setData((prevData) => {
             if (prevData) {
                 return prevData.map((note) =>
-                    note.id === id ? { ...note, content: newNote } : note // Update the content key
+                    note.id === id ? { ...note, content: newContent } : note
                 );
             }
             return prevData;
@@ -30,7 +29,7 @@ export default function NoteSync() {
                         console.error(`Error updating note for user ${id}:`, err)
                     );
                 } else {
-                    console.warn(`Missing id or note for update:`, { id, content });
+                    console.warn(`Missing id or note for update:`, { id, note: content });
                 }
             });
         } else {
@@ -62,8 +61,9 @@ export default function NoteSync() {
     return (
         <div>
             <div className="customer-list">
-                <div>
+                <div >
                     <ProfileClient />
+
                 </div>
                 {data && data.length > 0 ? (
                     <ul>
@@ -92,6 +92,7 @@ export default function NoteSync() {
                     Update Notes
                 </button>
             </div>
+
         </div>
     );
 }
