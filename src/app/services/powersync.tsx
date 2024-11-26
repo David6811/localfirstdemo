@@ -1,11 +1,11 @@
 import { AbstractPowerSyncDatabase, PowerSyncDatabase } from "@powersync/web";
-import { POWERSYNC_ENDPOINT, POWERSYNC_TOKEN } from "../config/_powersyncConfig";
+import { POWERSYNC_ENDPOINT } from "../config/_powersyncConfig";
 import { AppSchema } from "../domain/data/schema/users_schema";
-import { User } from "../domain/data/models/User";
-import { UserNoteUpdateRequest } from "../domain/data/models/OperationModels";
+import { NoteUpdateRequest } from "../domain/data/models/OperationModels";
+import { Note } from "../domain/data/models/Note";
 
 
-async function updateUserNoteInApi(opData: UserNoteUpdateRequest) {
+async function updateNoteInApi(opData: NoteUpdateRequest) {
     try {
         // Assuming your API is at '/api/put-endpoint' (adjust the URL as needed)
         const response = await fetch('/api/crud', {
@@ -40,7 +40,7 @@ class Connector {
     async fetchCredentials() {
         return {
             endpoint: POWERSYNC_ENDPOINT,
-            token: POWERSYNC_TOKEN
+            token: this.accessToken
         };
     }
 
@@ -64,11 +64,11 @@ class Connector {
 
             else if (opType == "PATCH") {
                 //saveNoteToMongo(powersyncNote);
-                const requestData: UserNoteUpdateRequest = {
-                    userId: operation.id,
-                    note: opData.note
+                const requestData: NoteUpdateRequest = {
+                    noteId: operation.id,
+                    content: opData.content
                 };
-                await await updateUserNoteInApi(requestData);
+                await await updateNoteInApi(requestData);
                 await transaction.complete();
             }
 
@@ -82,7 +82,7 @@ class Connector {
 export const db = new PowerSyncDatabase({
     schema: AppSchema,
     database: {
-        dbFilename: 'users.db'
+        dbFilename: 'notes.db'
     },
     flags: {
         enableMultiTabs: true
@@ -94,16 +94,16 @@ export const setupPowerSync = async (accessToken : string) => {
     db.connect(connector);
 };
 
-export const findUsers = async (): Promise<User[]> => {
-    const result = await db.getAll('SELECT * FROM users');
-    return result as User[];
+export const findNotes = async (): Promise<Note[]> => {
+    const result = await db.getAll('SELECT * FROM notes');
+    return result as Note[];
 };
 
 // Watch changes to lists
 const abortController = new AbortController();
 
-export const watchLists = async (onUpdate: (updates: User[]) => void): Promise<void> => {
-    for await (const { rows } of db.watch('SELECT * FROM users', [], { signal: abortController.signal })) {
+export const watchLists = async (onUpdate: (updates: Note[]) => void): Promise<void> => {
+    for await (const { rows } of db.watch('SELECT * FROM notes', [], { signal: abortController.signal })) {
         const updates = rows?._array ?? [];
         if (updates.length > 0) {
             onUpdate(updates);
@@ -112,11 +112,11 @@ export const watchLists = async (onUpdate: (updates: User[]) => void): Promise<v
 };
 
 
-export const updateNote = async (note: string, id: string) => {
-    console.log(`UPDATE users SET note = ? WHERE id = ?`);
+export const updateNote = async (content: string, id: string) => {
+    console.log(`UPDATE notes SET content = ? WHERE id = ?`);
     await db.execute(
-        `UPDATE users SET note = ? WHERE id = ?`,
-        [note, id]
+        `UPDATE notes SET content = ? WHERE id = ?`,
+        [content, id]
     );
     console.log(`Note updated successfully for ID: ${id}`);
 };

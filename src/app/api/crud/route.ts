@@ -43,17 +43,17 @@ export async function PUT(request: NextRequest) {
   // Connect to the database
   await connectToDatabase();
 
-  const { userId, note } = body;
+  const { noteId, content } = body;
 
-  const userObjectId = new ObjectId(userId);
+  const noteObjectId = new ObjectId(noteId);
 
   // Perform the update operation (only update the note field)
   const updateResult = await client
     .db("localfirst")
-    .collection("users")
+    .collection("notes")
     .updateOne(
-      { _id: userObjectId }, // Filter: find the user by their ID
-      { $set: { note } } // Update operation: only update the note
+      { _id: noteObjectId }, // Filter: find the user by their ID
+      { $set: { content } } // Update operation: only update the note
     );
 
   if (updateResult.modifiedCount === 0) {
