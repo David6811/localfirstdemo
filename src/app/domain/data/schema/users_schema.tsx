@@ -6,14 +6,25 @@ const users = new Table(
     // id column (text) is automatically included
     _id: column.text,
     email: column.text,
-    name: column.text,
-    note: column.text
+    name: column.text
+  },
+  { indexes: {} }
+);
+
+const notes = new Table(
+  {
+    // id column (text) is automatically included
+    _id: column.text,
+    content: column.text,
+    createdAt: column.text,
+    user_id: column.text
   },
   { indexes: {} }
 );
 
 export const AppSchema = new Schema({
-  users
+  users,
+  notes
 });
 
 export type Database = (typeof AppSchema)['types'];

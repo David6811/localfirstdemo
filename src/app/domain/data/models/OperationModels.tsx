@@ -1,4 +1,4 @@
-export interface UserNoteUpdateRequest {
-  userId: string;
+export interface NoteUpdateRequest {
+  noteId: string;
   note: string;
 }
